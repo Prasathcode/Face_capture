@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Dataset Capture</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom styles can go here */
+        .container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">Student Face Dataset Collector</h2>
+        <div class="row  mt-5 " >
+            <div class="col-6">
+                <form id="studentForm" class="form-group">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id">ID:</label>
+                        <input type="text" class="form-control" id="id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="class">Class:</label>
+                        <input type="text" class="form-control" id="class" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <input type="text" class="form-control" id="year" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentor_no">Mentor No:</label>
+                        <input type="text" class="form-control" id="mentor_no" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mentor_name">Mentor Name:</label>
+                        <input type="text" class="form-control" id="mentor_name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Capture Face Dataset</button>
+                </form>
+            </div>
+    
+            <div class="col-6 bg-dark rounded">
+                <h3 class="text-center text-white">Live Camera Feed</h3>
+                <img src="{{ url_for('video_feed') }}" class="img-fluid my-auto rounded" width="640" height="480">
+    
+                <div id="status"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('studentForm');
+        const statusDiv = document.getElementById('status');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('name').value,
+                id: document.getElementById('id').value,
+                class: document.getElementById('class').value,
+                year: document.getElementById('year').value,
+                mentor_no: document.getElementById('mentor_no').value,
+                mentor_name: document.getElementById('mentor_name').value
+            };
+
+            const response = await fetch('/capture', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            statusDiv.innerHTML = `<p>${result.message}</p>`;
+        });
+    </script>
+</body>
+
+</html>
