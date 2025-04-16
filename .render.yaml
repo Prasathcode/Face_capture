@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: student-face-capture
+    name: Face_capture
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python app.py"
+    startCommand: "gunicorn app:app"
     envVars:
       - key: FLASK_ENV
-        value: development
+        value: production
